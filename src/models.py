@@ -1,13 +1,25 @@
 import numpy as np
+import periodictable
 
 class Atom:
-    def __init__(self, element, position, mass, charge):
-        self.element = element
+    def __init__(self, element_symbol, position, mass=None, charge=0.0):
+        """
+        If mass is not provided, it will be fetched from the periodictable library.
+        """
+        self.element = element_symbol
         self.position = np.array(position, dtype=float)
-        self.velocity = np.zeros_like(self.position)  # Initialize velocity to zero
+        self.velocity = np.zeros_like(self.position)
         self.force = np.zeros_like(self.position)
-        self.mass = mass
+        # Fetch mass from periodictable if not provided
+        if mass is None:
+            # Convert symbol to element object; handles both uppercase and lowercase
+            elem_data = getattr(periodictable.elements, element_symbol.capitalize())
+            self.mass = elem_data.mass
+        else:
+            self.mass = mass
         self.charge = charge
+
+        print(f"Atom created: {self.element}, mass: {self.mass}, charge: {self.charge}")
 
     def __repr__(self):
         return f"Atom({self.element}, pos={self.position}, mass={self.mass}, charge={self.charge})"
