@@ -5,6 +5,7 @@ class Atom:
         self.element = element
         self.position = np.array(position, dtype=float)
         self.velocity = np.zeros_like(self.position)  # Initialize velocity to zero
+        self.force = np.zeros_like(self.position)
         self.mass = mass
         self.charge = charge
 
